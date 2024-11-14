@@ -1,0 +1,28 @@
+[cloudera_manager]
+${NODE_0} host_template=CM
+
+[cdpbase_nodes]
+${NODE_1} host_template=BASE
+
+[db_server]
+${NODE_0}
+
+[custom_repo]
+${NODE_0}
+
+${KTS_SERVERS}
+
+${KMS_SERVERS}
+
+${CA_SERVERS}
+
+${KRB5_SERVERS}
+
+[cluster:children]
+cloudera_manager
+cdpbase-nodes
+${KTS_SERVERS_GROUP}
+
+[all:vars]
+tls=False
+host_pattern_mismatch=ignore
