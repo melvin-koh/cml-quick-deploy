@@ -20,7 +20,7 @@ ${KRB5_SERVERS}
 
 [cluster:children]
 cloudera_manager
-cdpbase-nodes
+cdpbase_nodes
 ${KTS_SERVERS_GROUP}
 
 [all:vars]

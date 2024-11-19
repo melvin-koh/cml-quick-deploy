@@ -31,9 +31,9 @@
   register: cloudera_manager_all_services
 
 - set_fact:
-    ranger_service_name: "{{ cloudera_manager_all_services.json | community.general.json_query(query) }}"
+    ranger_service_name: "{{ (cloudera_manager_all_services.json | json_query(query) | first) | default(None) }}"
   vars:
-    query: "items[?type == 'RANGER'].name | [0]"
+    query: "items[?type == 'RANGER'].name"
 
 - name: DEBUG - ranger_service_name
   debug:
@@ -55,9 +55,9 @@
   register: cm_deployment_services
 
 - set_fact:
-    ranger_server: "{{ cm_deployment_services.json | community.general.json_query(query) }}"
+    ranger_server: "{{ (cm_deployment_services.json | json_query(query) | first) | default(None) }}"
   vars:
-    query: "clusters[?name == '{{ cluster_name }}' ].services[].roles[?type == 'RANGER_ADMIN'][].hostRef.hostname | [0]"
+    query: "clusters[?name == '{{ cluster_name }}' ].services[].roles[?type == 'RANGER_ADMIN'][].hostRef.hostname"
 
 - name: DEBUG - Ranger Server 
   debug:
@@ -94,14 +94,14 @@
 
 
 - set_fact:
-    ranger_ssl: "{{ full_ranger_admin_config.json | community.general.json_query(query) }}"
+    ranger_ssl: "{{ (full_ranger_admin_config.json | json_query(query) | first) | default(None) }}"
   vars:
-    query: "items[?name == 'ssl_enabled'].value | [0]"
+    query: "items[?name == 'ssl_enabled'].value"
 
 - set_fact:
-    ranger_ssl: "{{ full_ranger_admin_config.json | community.general.json_query(query) }}"
+    ranger_ssl: "{{ (full_ranger_admin_config.json | json_query(query) | first) | default(None) }}"
   vars:
-    query: "items[?name == 'ssl_enabled'].default | [0]"
+    query: "items[?name == 'ssl_enabled'].default"
   when: ranger_ssl == ""
 
 - name: DEBUG - ranger_ssl
@@ -120,27 +120,27 @@
 
 
 - set_fact:
-    ranger_port: "{{ full_ranger_config.json | community.general.json_query(query) }}"
+    ranger_port: "{{ (full_ranger_config.json | json_query(query) | first) | default(None) }}"
   vars:
-    query: "items[?name == 'ranger_service_https_port'].value | [0]"
+    query: "items[?name == 'ranger_service_https_port'].value"
   when: ranger_ssl
 
 - set_fact:
-    ranger_port: "{{ full_ranger_config.json | community.general.json_query(query) }}"
+    ranger_port: "{{ (full_ranger_config.json | json_query(query) | first) | default(None) }}"
   vars:
-    query: "items[?name == 'ranger_service_https_port'].default | [0]"
+    query: "items[?name == 'ranger_service_https_port'].default"
   when: ranger_ssl and ranger_port == ""
 
 - set_fact:
-    ranger_port: "{{ full_ranger_config.json | community.general.json_query(query) }}"
+    ranger_port: "{{ (full_ranger_config.json | json_query(query) | first) | default(None) }}"
   vars:
-    query: "items[?name == 'ranger_service_http_port'].value | [0]"
+    query: "items[?name == 'ranger_service_http_port'].value"
   when: not ranger_ssl
 
 - set_fact:
-    ranger_port: "{{ full_ranger_config.json | community.general.json_query(query) }}"
+    ranger_port: "{{ (full_ranger_config.json | json_query(query) | first) | default(None) }}"
   vars:
-    query: "items[?name == 'ranger_service_http_port'].default | [0]"
+    query: "items[?name == 'ranger_service_http_port'].default"
   when: not ranger_ssl and ranger_port == ""
 
 - name: DEBUG - ranger_port

@@ -67,10 +67,15 @@
     body_format: json
   register: cloudera_manager_all_services
 
+#- set_fact:
+#    solr_service_name: "{{ cloudera_manager_all_services.json | community.general.json_query(query) }}"
+#  vars:
+#    query: "items[?type == 'SOLR' && name != 'infra_solr'].name | [0]"
+
 - set_fact:
-    solr_service_name: "{{ cloudera_manager_all_services.json | community.general.json_query(query) }}"
+    solr_service_name: "{{ (cloudera_manager_all_services.json | json_query(query) | first) | default(None) }}"
   vars:
-    query: "items[?type == 'SOLR' && name != 'infra_solr'].name | [0]"
+    query: "items[?type == `SOLR` && name != `infra_solr`].name"
 
 - name: DEBUG - solr_service_name
   debug:
@@ -87,9 +92,9 @@
 
 
 - set_fact:
-    hue_service_name: "{{ cloudera_manager_all_services.json | community.general.json_query(query) }}"
+    hue_service_name: "{{ (cloudera_manager_all_services.json | json_query(query) | first) | default(None) }}"
   vars:
-    query: "items[?type == 'HUE'].name | [0]"
+    query: "items[?type == 'HUE'].name"
 
 - name: DEBUG - hue_service_name
   debug:
@@ -106,9 +111,9 @@
 
 
 - set_fact:
-    knox_service_name: "{{ cloudera_manager_all_services.json | community.general.json_query(query) }}"
+    knox_service_name: "{{ (cloudera_manager_all_services.json | json_query(query) | first) | default(None) }}"
   vars:
-    query: "items[?type == 'KNOX'].name | [0]"
+    query: "items[?type == 'KNOX'].name"
 
 - name: DEBUG - knox_service_name
   debug:
@@ -125,9 +130,9 @@
 
 
 - set_fact:
-    ranger_service_name: "{{ cloudera_manager_all_services.json | community.general.json_query(query) }}"
+    ranger_service_name: "{{ (cloudera_manager_all_services.json | json_query(query) | first) | default(None) }}"
   vars:
-    query: "items[?type == 'RANGER'].name | [0]"
+    query: "items[?type == 'RANGER'].name"
 
 - name: DEBUG - ranger_service_name
   debug:
@@ -144,9 +149,9 @@
 
 
 - set_fact:
-    oozie_service_name: "{{ cloudera_manager_all_services.json | community.general.json_query(query) }}"
+    oozie_service_name: "{{ (cloudera_manager_all_services.json | json_query(query) | first) | default(None) }}"
   vars:
-    query: "items[?type == 'OOZIE'].name | [0]"
+    query: "items[?type == 'OOZIE'].name"
 
 - name: DEBUG - oozie_service_name
   debug:
@@ -163,9 +168,9 @@
 
 
 - set_fact:
-    ssb_service_name: "{{ cloudera_manager_all_services.json | community.general.json_query(query) }}"
+    ssb_service_name: "{{ (cloudera_manager_all_services.json | json_query(query) | first) | default(None) }}"
   vars:
-    query: "items[?type == 'SQL_STREAM_BUILDER'].name | [0]"
+    query: "items[?type == 'SQL_STREAM_BUILDER'].name"
 
 - name: DEBUG - ssb_service_name
   debug:
@@ -182,9 +187,9 @@
 
 
 - set_fact:
-    livy3_service_name: "{{ cloudera_manager_all_services.json | community.general.json_query(query) }}"
+    livy3_service_name: "{{ (cloudera_manager_all_services.json | json_query(query) | first) | default(None) }}"
   vars:
-    query: "items[?type == 'LIVY_FOR_SPARK3'].name | [0]"
+    query: "items[?type == 'LIVY_FOR_SPARK3'].name"
 
 - name: DEBUG - livy3_service_name
   debug:
@@ -202,9 +207,9 @@
 
 
 - set_fact:
-    sr_service_name: "{{ cloudera_manager_all_services.json | community.general.json_query(query) }}"
+    sr_service_name: "{{ (cloudera_manager_all_services.json | json_query(query) | first) | default(None) }}"
   vars:
-    query: "items[?type == 'SCHEMAREGISTRY'].name | [0]"
+    query: "items[?type == 'SCHEMAREGISTRY'].name"
 
 - name: DEBUG - sr_service_name
   debug:
@@ -222,9 +227,9 @@
 
 
 - set_fact:
-    efm_service_name: "{{ cloudera_manager_all_services.json | community.general.json_query(query) }}"
+    efm_service_name: "{{ (cloudera_manager_all_services.json | json_query(query) | first) | default(None) }}"
   vars:
-    query: "items[?type == 'EFM'].name | [0]"
+    query: "items[?type == 'EFM'].name"
 
 - name: DEBUG - efm_service_name
   debug:

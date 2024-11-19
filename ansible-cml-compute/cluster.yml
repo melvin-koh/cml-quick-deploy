@@ -37,9 +37,6 @@ clusters:
           dfs_datanode_failed_volumes_tolerated: 0
         NAMENODE:
           dfs_name_dir_list: /hadoop/nn
-          dfs_federation_namenode_nameservice: "{{ cluster_name }}"
-          autofailover_enabled: true
-          dfs_namenode_quorum_journal_name: "{{ cluster_name }}"
         JOURNALNODE:
           dfs_journalnode_edits_dir: /hadoop/jn  
         SECONDARYNAMENODE:
@@ -99,14 +96,14 @@ clusters:
       CM:
         HDFS: [GATEWAY]
       BASE:
-        HDFS: [NAMENODE, DATANODE, GATEWAY]
+        HDFS: [NAMENODE, SECONDARYNAMENODE, DATANODE, GATEWAY]
         HIVE: [HIVEMETASTORE, GATEWAY]
         HIVE_ON_TEZ: [HIVESERVER2, GATEWAY]
         TEZ: [GATEWAY]
         INFRA_SOLR: [SOLR_SERVER]
         RANGER: [RANGER_ADMIN, RANGER_TAGSYNC, RANGER_USERSYNC]
         TEZ: [GATEWAY]
-        YARN: [RESOURCEMANAGER, NODEMANAGER, GATEWAY]
+        YARN: [RESOURCEMANAGER, JOBHISTORY, NODEMANAGER, GATEWAY]
         ZOOKEEPER: [SERVER]         
 
 mgmt:

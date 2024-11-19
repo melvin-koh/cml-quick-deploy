@@ -771,7 +771,16 @@ mkdir -p ${LOG_DIR}/
 #############################################################################################
 if [ ! -z ${CLUSTER_TYPE} ]
 then
-    if [ "${CLUSTER_TYPE}" = "basic" ]
+    if [ "${CLUSTER_TYPE}" = "cml-compute" ]
+    then
+        export ANSIBLE_HOST_FILE="ansible-cml-compute/hosts"
+        export ANSIBLE_ALL_FILE="ansible-cml-compute/all"
+        export ANSIBLE_CLUSTER_YML_FILE="ansible-cml-compute/cluster.yml"
+        export ANSIBLE_EXTRA_VARS_YML_FILE="ansible-cml-compute/extra_vars.yml"
+        export FREE_IPA="true"
+        export DATA_LOAD="false"
+        export USER_CREATION="false"
+    elif [ "${CLUSTER_TYPE}" = "basic" ]
     then
         export ANSIBLE_HOST_FILE="ansible-cdp-basic/hosts"
         export ANSIBLE_ALL_FILE="ansible-cdp-basic/all"
@@ -1413,6 +1422,8 @@ if [ ! -z ${KUBECONFIG_PATH} ]
 then
     cp ${KUBECONFIG_PATH} ${TO_DEPLOY_FOLDER}/kubeconfig
 fi
+
+logger info "############# DEBUG: FREE_IPA=${FREE_IPA} NODE_IPA=${NODE_IPA} KERBEROS=${KERBEROS} DISTRIBUTION_TO_DEPLOY=${DISTRIBUTION_TO_DEPLOY}"
 
 if [ "${KERBEROS}" = "true" ] && [ "${DISTRIBUTION_TO_DEPLOY}" != "HDP"  ]
 then
